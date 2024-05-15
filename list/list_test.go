@@ -8,9 +8,10 @@ func TestInserting(t *testing.T) {
 	tests := []struct {
 		input  []int64
 		output string
+		length int
 	}{
-		{[]int64{1}, "(1)"},
-		{[]int64{1, 2, 3, 4}, "(1, 2, 3, 4)"},
+		{[]int64{1}, "(1)", 1},
+		{[]int64{1, 2, 3, 4}, "(1, 2, 3, 4)", 4},
 	}
 
 	for _, test := range tests {
@@ -21,6 +22,9 @@ func TestInserting(t *testing.T) {
 		if l.String() != test.output {
 			t.Fatalf("expected=%v. got=%v", test.output, l.String())
 		}
+		if l.length != test.length {
+			t.Fatalf("expected length=%d. got length=%d", test.length, l.length)
+		}
 	}
 }
 
@@ -30,13 +34,14 @@ func TestRemoving(t *testing.T) {
 		remove int64
 		output string
 		err    string
+		length int
 	}{
-		{[]int64{1}, 1, "()", ""},
-		{[]int64{1, 2, 3}, 2, "(1, 3)", ""},
-		{[]int64{1, 2}, 2, "(1)", ""},
-		{[]int64{1, 2}, 1, "(2)", ""},
-		{[]int64{1}, 2, "(1)", "value not in list"},
-		{[]int64{}, 2, "()", "empty list"},
+		{[]int64{1}, 1, "()", "", 0},
+		{[]int64{1, 2, 3}, 2, "(1, 3)", "", 2},
+		{[]int64{1, 2}, 2, "(1)", "", 1},
+		{[]int64{1, 2}, 1, "(2)", "", 1},
+		{[]int64{1}, 2, "(1)", "value not in list", 1},
+		{[]int64{}, 2, "()", "empty list", 0},
 	}
 
 	for _, test := range tests {
@@ -53,6 +58,9 @@ func TestRemoving(t *testing.T) {
 
 		if l.String() != test.output {
 			t.Fatalf("expected=%v. got=%v", test.output, l.String())
+		}
+		if l.length != test.length {
+			t.Fatalf("expected length=%d. got length=%d", test.length, l.length)
 		}
 	}
 }

@@ -22,6 +22,7 @@ func (l *List) Insert(value int64) {
 	}
 	if l.head == nil {
 		l.head = &n
+		l.length += 1
 		return
 	}
 
@@ -48,6 +49,7 @@ func (l *List) Remove(value int64) error {
 			} else {
 				prev.next = cur.next
 			}
+			l.length -= 1
 			return nil
 		}
 		prev = cur
