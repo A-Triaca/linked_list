@@ -6,18 +6,18 @@ import (
 	"fmt"
 )
 
-type Node struct {
-	value int64
-	next  *Node
+type Node[V comparable] struct {
+	value V
+	next  *Node[V]
 }
 
-type List struct {
-	head   *Node
+type List[V comparable] struct {
+	head   *Node[V]
 	length int
 }
 
-func (l *List) Insert(value int64) {
-	n := Node{
+func (l *List[V]) Insert(value V) {
+	n := Node[V]{
 		value: value,
 	}
 	if l.head == nil {
@@ -36,9 +36,9 @@ func (l *List) Insert(value int64) {
 	l.length += 1
 }
 
-func (l *List) Remove(value int64) error {
+func (l *List[V]) Remove(value V) error {
 	cur := l.head
-	var prev *Node = nil
+	var prev *Node[V] = nil
 	if cur == nil {
 		return errors.New("empty list")
 	}
@@ -58,7 +58,7 @@ func (l *List) Remove(value int64) error {
 	return errors.New("value not in list")
 }
 
-func (l *List) String() string {
+func (l *List[V]) String() string {
 	var out bytes.Buffer
 
 	out.WriteString("(")
@@ -66,7 +66,7 @@ func (l *List) String() string {
 	cur := l.head
 	if cur != nil {
 		for {
-			out.WriteString(fmt.Sprintf("%d", cur.value))
+			out.WriteString(fmt.Sprintf("%v", cur.value))
 			if cur.next == nil {
 				break
 			}

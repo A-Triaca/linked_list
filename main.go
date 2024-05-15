@@ -14,7 +14,7 @@ const PROMPT = ">> "
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
-	l := list.List{}
+	l := list.List[int64]{}
 
 	for {
 		fmt.Print(PROMPT)
