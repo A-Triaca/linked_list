@@ -6,6 +6,7 @@ import (
 	"linked_list/list"
 	"os"
 	"strconv"
+	"strings"
 )
 
 const PROMPT = ">> "
@@ -23,13 +24,25 @@ func main() {
 		}
 
 		line := scanner.Text()
-		value, err := strconv.ParseInt(line, 10, 32)
+
+		input := strings.Split(line, " ")
+
+		value, err := strconv.ParseInt(input[1], 10, 32)
 
 		if err != nil {
 			fmt.Print("Only integers supported")
 		}
 
-		l.Insert(value)
-		fmt.Printf(l.String())
+		if input[0] == "+" {
+			l.Insert(value)
+		}
+		if input[0] == "-" {
+			ok := l.Remove(value)
+			if ok != nil {
+				fmt.Printf("Error removing %d - %v\n", value, ok)
+			}
+		}
+
+		fmt.Printf("Current list - %s\n", l.String())
 	}
 }
